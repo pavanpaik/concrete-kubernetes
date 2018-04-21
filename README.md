@@ -1,6 +1,6 @@
-# Concrete5.7 CDN on Kubernetes
+# Cockpit CDN on Kubernetes
 
-This project can be used to provision Concrete 5.7 CDN on any kubernetes cluster.
+This project can be used to provision Cockpit CDN on any kubernetes cluster.
 
 Implemented by following the stateful app setup example provided in kubernetes documentation. 
 https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
@@ -14,18 +14,17 @@ https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persis
 
 ### Create a Secret for MySQL Password
 
-```
-kubectl create secret generic mysql-pass --from-literal=password=YOUR_PASSWORD
-kubectl create secret generic mysql-root-pass --from-literal=password=YOUR_PASSWORD
-```
+### Create Persistance Volume Claim
 
-### Deploy MySQL
+```kubectl create -f cockpit-pvc.yaml```
 
-```kubectl create -f mysql-deployment.yaml```
+### Deploy Mongo
 
-### Deploy WordPress
+```kubectl create -f mongo-deployment.yaml```
 
-```kubectl create -f concrete-deployment.yaml```
+### Deploy Cockpit
+
+```kubectl create -f cockpit-deployment.yaml```
 
 ### Verify status of all nodes using
 
@@ -33,33 +32,20 @@ kubectl create secret generic mysql-root-pass --from-literal=password=YOUR_PASSW
 
 ### Test
 
-Access the following URL in browser - http://localhost/
-
-Enter details for first access.
-```
-Server: concrete-mysql
-MySQL User Name: c5db_user
-MySQL Password: YOUR_PASSWORD
-Database Name: c5db
-```
+http://localhost/
 
 ## Cleaning up
 
-### Delete your Secret
-
-```
-kubectl delete secret mysql-pass
-kubectl delete secret mysql-root-pass
-```
 
 ### Delete all Deployments and Services
 
 ```
-kubectl delete deployment -l app=concrete-kubernetes
-kubectl delete service -l app=concrete-kubernetes
-kubectl delete pvc -l app=concrete-kubernetes
+kubectl delete deployment -l app=cockpit-kubernetes
+kubectl delete service -l app=cockpit-kubernetes
 ```
 
 ### Delete the PersistentVolumeClaims
 
-```kubectl delete pvc -l app=concrete-kubernetes```
+```
+kubectl delete pvc -l app=cockpit-kubernetes
+```
